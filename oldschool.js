@@ -110,7 +110,7 @@ function enemy() {
                 enemyLocX =[];
                 for(var i=0;i<5;i++){
                     this.rand = floor(random(9));
-                    enemyLocX[i] = spawnLoc[this.rand];
+                    enemyLocX = append(enemyLocX,spawnLoc[this.rand]);
                 }
                 x = (sizex / 2) - 10;
                 y = 520;
