@@ -4,17 +4,18 @@ var yborder;
 
 //50,110,170,230,290,350,410,470,530
 var spawnLoc = [50, 110, 170, 230, 290, 350, 410, 470, 530];
-var enemyLocX = [230, 410, 110];
-var enemyLocY = [-50, -170, -290];
+var enemyLocX = [230, 410, 110, 230, 350];
+var enemyLocY = [-50, -170, -290, -290, -410];
 
 var sizex = 600;
 var sizey = 600;
+var speed = 1;
 
 var x;
 var y;
 var xenemy;
 var yenemy;
-var score=0;
+var score = 0;
 
 
 
@@ -58,7 +59,7 @@ function enemy() {
     yenemy = -50;
     this.check = function() {
         if (max(enemyLocY) > 600) {
-            for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < enemyLocX.length; i++) {
                 if (enemyLocY[i] > 600) {
                     this.rand = floor(random(9));
                     enemyLocX[i] = spawnLoc[this.rand];
@@ -66,13 +67,21 @@ function enemy() {
 
                 }
             }
-            score+=10;
+            score += 10;
+            if (score % 200 === 0) {
+                this.rand = floor(random(9));
+                enemyLocX = append(enemyLocX, spawnLoc[this.rand]);
+                enemyLocY = append(enemyLocY, -100);
+                console.log(enemyLocX);
+            }
+
+            if (score === 500) speed = speed + 1;
         }
     }
 
     this.show = function() {
-        fill(0, 255, 255,120);
-        for (var i = 0; i < 3; i++) {
+        fill(0, 255, 255);
+        for (var i = 0; i < enemyLocX.length; i++) {
             rect(enemyLocX[i], enemyLocY[i], 20, 20)
             rect(enemyLocX[i], enemyLocY[i], 20, 20)
             rect(enemyLocX[i], enemyLocY[i] + 20, 20, 20)
@@ -88,18 +97,20 @@ function enemy() {
 
     this.update = function() {
         //yenemy=yenemy+1;
-        for (var i = 0; i < 3; i++) {
-            enemyLocY[i] += 5;
+        for (var i = 0; i < enemyLocX.length; i++) {
+            enemyLocY[i] += 5 * speed;
         }
 
     }
     this.colision = function() {
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < enemyLocX.length; i++) {
 
-            if (x === enemyLocX[i] && 540 === (enemyLocY[i]+80)){
-                enemyLocX = [230, 410, 110];
-                enemyLocY = [-50, -170, -290];
-                score=0;
+            if (x === enemyLocX[i] && 540 === (enemyLocY[i] + 80) || x === enemyLocX[i] && 540 === enemyLocY[i]) {
+                enemyLocY = [-50, -170, -290, -290, -410];
+                x = (sizex / 2) - 10;
+                y = 520;
+                score = 0;
+                speed = 1;
 
             }
 
