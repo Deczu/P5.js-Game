@@ -14,6 +14,7 @@ var x;
 var y;
 var xenemy;
 var yenemy;
+var score=0;
 
 
 
@@ -36,6 +37,10 @@ function draw() {
     enemy.update();
     enemy.show();
     enemy.colision();
+    fill(255);
+    textSize(32);
+    text(score, 32, 40);
+
 }
 
 function keyPressed() {
@@ -58,15 +63,26 @@ function enemy() {
                     this.rand = floor(random(9));
                     enemyLocX[i] = spawnLoc[this.rand];
                     enemyLocY[i] = -50;
+
                 }
             }
+            score+=10;
         }
     }
 
     this.show = function() {
-        fill(255, 0, 255);
+        fill(0, 255, 255,120);
         for (var i = 0; i < 3; i++) {
             rect(enemyLocX[i], enemyLocY[i], 20, 20)
+            rect(enemyLocX[i], enemyLocY[i], 20, 20)
+            rect(enemyLocX[i], enemyLocY[i] + 20, 20, 20)
+            rect(enemyLocX[i], enemyLocY[i] + 40, 20, 20)
+            rect(enemyLocX[i], enemyLocY[i] + 60, 20, 20)
+            rect(enemyLocX[i] - 20, enemyLocY[i] + 20, 20, 20)
+            rect(enemyLocX[i] + 20, enemyLocY[i] + 20, 20, 20)
+            rect(enemyLocX[i] - 20, enemyLocY[i] + 60, 20, 20)
+            rect(enemyLocX[i] + 20, enemyLocY[i] + 60, 20, 20)
+
         }
     }
 
@@ -79,7 +95,16 @@ function enemy() {
     }
     this.colision = function() {
         for (var i = 0; i < 3; i++) {
-            if (x === enemyLocX[i] && y === enemyLocY[i]) console.log("colision detected");
+
+            if (x === enemyLocX[i] && 540 === (enemyLocY[i]+80)){
+                enemyLocX = [230, 410, 110];
+                enemyLocY = [-50, -170, -290];
+                console.log("Kolizja: KURWA KUBICA WYJEBAŁ W BANDE");
+                score=0;
+
+            }
+
+
         }
     }
 }
