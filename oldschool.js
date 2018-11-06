@@ -99,7 +99,6 @@ function enemy() {
             if (x === enemyLocX[i] && 540 === (enemyLocY[i]+80)){
                 enemyLocX = [230, 410, 110];
                 enemyLocY = [-50, -170, -290];
-                console.log("Kolizja: KURWA KUBICA WYJEBAŁ W BANDE");
                 score=0;
 
             }
