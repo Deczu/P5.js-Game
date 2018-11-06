@@ -107,6 +107,11 @@ function enemy() {
 
             if (x === enemyLocX[i] && 540 === (enemyLocY[i] + 80) || x === enemyLocX[i] && 540 === enemyLocY[i]) {
                 enemyLocY = [-50, -170, -290, -290, -410];
+                enemyLocX =[];
+                for(var i=0;i<5;i++){
+                    this.rand = floor(random(9));
+                    enemyLocX[i] = spawnLoc[this.rand];
+                }
                 x = (sizex / 2) - 10;
                 y = 520;
                 score = 0;
