@@ -2,76 +2,133 @@ var player;
 var xborder;
 var yborder;
 
+//50,110,170,230,290,350,410,470,530
+var spawnLoc = [50, 110, 170, 230, 290, 350, 410, 470, 530];
+var enemyLocX = [230, 410, 110];
+var enemyLocY = [-50, -170, -290];
+
 var sizex = 600;
 var sizey = 600;
+
+var x;
+var y;
+var xenemy;
+var yenemy;
 
 
 
 function setup() {
-	createCanvas(sizex, sizey);
-	xborder = 0;
-	yborder = 0;
-	player = new player();
-	border = new border();
+    frameRate(60);
+    createCanvas(sizex, sizey);
+    xborder = 0;
+    yborder = 0;
+    player = new player();
+    border = new border();
+    enemy = new enemy();
 }
 
 function draw() {
-	background(50);
-	player.update();
-	player.show();
-	border.show();
+    background(50);
+    player.update();
+    player.show();
+    border.show();
+    enemy.check();
+    enemy.update();
+    enemy.show();
+    enemy.colision();
 }
 
 function keyPressed() {
-	if (keyIsDown() === false) {
-		player.dir(0);
-	} else if (keyIsDown(LEFT_ARROW)) {
-		player.dir(-60);
-	} else if (keyIsDown(RIGHT_ARROW)) {
-		player.dir(60);
-	}
+    if (keyIsDown() === false) {
+        player.dir(0);
+    } else if (keyIsDown(LEFT_ARROW)) {
+        player.dir(-60);
+    } else if (keyIsDown(RIGHT_ARROW)) {
+        player.dir(60);
+    }
 }
 
+function enemy() {
+    xenemy = 50;
+    yenemy = -50;
+    this.check = function() {
+        if (max(enemyLocY) > 600) {
+            for (var i = 0; i < 3; i++) {
+                if (enemyLocY[i] > 600) {
+                    this.rand = floor(random(9));
+                    enemyLocX[i] = spawnLoc[this.rand];
+                    enemyLocY[i] = -50;
+                }
+            }
+        }
+    }
+
+    this.show = function() {
+        fill(255, 0, 255);
+        for (var i = 0; i < 3; i++) {
+            rect(enemyLocX[i], enemyLocY[i], 20, 20)
+        }
+    }
+
+    this.update = function() {
+        //yenemy=yenemy+1;
+        for (var i = 0; i < 3; i++) {
+            enemyLocY[i] += 5;
+        }
+
+    }
+    this.colision = function() {
+        for (var i = 0; i < 3; i++) {
+            if (x === enemyLocX[i] && y === enemyLocY[i]) console.log("colision detected");
+        }
+    }
+}
+
+
+
 function player() {
-	this.x = (sizex / 2) - 10;
-	this.y = 520;
-	this.xspeed = 0;
-	this.yspeed = 0;
+    x = (sizex / 2) - 10;
+    y = 520;
+    this.xspeed = 0;
+    this.yspeed = 0;
 
-	this.dir = function(x, y) {
-		this.xspeed = x;
+    this.dir = function(x, y) {
+        this.xspeed = x;
 
-	}
+    }
 
-	this.update = function() {
-		this.x = this.x + this.xspeed;
-		if (this.x < 50) this.x = 50;
-		if (this.x > 530) this.x = 530;
-		this.xspeed = 0;
-	}
+    this.update = function() {
+        x = x + this.xspeed;
+        if (x < 50) x = 50;
+        if (x > 530) x = 530;
+        this.xspeed = 0;
+    }
 
-	this.show = function() {
-		fill(255, 0, 0);
-		rect(this.x, this.y, 20, 20)
-		rect(this.x, this.y + 20, 20, 20)
-		rect(this.x, this.y + 40, 20, 20)
-		rect(this.x, this.y + 60, 20, 20)
-		rect(this.x - 20, this.y + 20, 20, 20)
-		rect(this.x + 20, this.y + 20, 20, 20)
-		rect(this.x - 20, this.y + 60, 20, 20)
-		rect(this.x + 20, this.y + 60, 20, 20)
-	}
+    this.show = function() {
+        fill(255, 0, 0);
+        rect(x, y, 20, 20)
+        rect(x, y + 20, 20, 20)
+        rect(x, y + 40, 20, 20)
+        rect(x, y + 60, 20, 20)
+        rect(x - 20, y + 20, 20, 20)
+        rect(x + 20, y + 20, 20, 20)
+        rect(x - 20, y + 60, 20, 20)
+        rect(x + 20, y + 60, 20, 20)
+    }
+
 }
 
 function border() {
-	this.show = function() {
-		fill(255, 255, 255);
-		rect(xborder, yborder, 20, 100);
-		rect(xborder + 580, yborder, 20, 100);
-		rect(xborder, yborder + 300, 20, 100);
-		rect(xborder + 580, yborder + 300, 20, 100);
-		yborder = yborder + 10;
-		if (yborder > 260) yborder = 0;
-	}
+    this.show = function() {
+        fill(255, 255, 255);
+        rect(xborder, yborder - 300, 20, 100);
+        rect(xborder + 580, yborder, 20, 100);
+        rect(xborder, yborder, 20, 100);
+        rect(xborder + 580, yborder - 300, 20, 100);
+        rect(xborder, yborder + 300, 20, 100);
+        rect(xborder + 580, yborder + 300, 20, 100);
+        yborder = yborder + 10;
+        if (yborder > 290) yborder = 0;
+    }
 
 }
